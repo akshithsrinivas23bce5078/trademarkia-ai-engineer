@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Study Planner</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Use the Inter font family */
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        .nav-link-active {
+            border-bottom-color: #4f46e5;
+            color: #4f46e5;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800">
+
+    <!-- Main Application Container -->
+    <div id="app-root">
+
+        <!-- ================================== -->
+        <!-- 1. LOGIN PAGE                    -->
+        <!-- ================================== -->
+        <div id="login-page" class="flex items-center justify-center min-h-screen p-4">
+            <div class="w-full max-w-md bg-white rounded-xl shadow-lg p-8 space-y-6">
+                <div class="text-center">
+                    <h1 class="text-3xl font-bold text-slate-900">Smart Study Planner</h1>
+                    <p class="text-slate-500 mt-2">Log in to manage your schedule</p>
+                </div>
+                <!-- Login Form -->
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-slate-700">Email Address</label>
+                        <input type="email" id="email" value="student@example.com" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500" required>
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
+                        <input type="password" id="password" value="password123" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500" required>
+                    </div>
+                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                        Sign In
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================================== -->
+        <!-- 2. MAIN APPLICATION (LOGGED IN)  -->
+        <!-- ================================== -->
+        <div id="app-page" class="hidden">
+            <header class="bg-white shadow-md sticky top-0 z-20">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-between h-16">
+                        <!-- Left Side: Title & Navigation -->
+                        <div class="flex items-center space-x-8">
+                           <h1 class="text-xl font-bold text-indigo-600">Smart Planner</h1>
+                           <div class="hidden md:flex items-center space-x-4">
+                               <button data-page="schedule" class="nav-link text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent transition-colors">Schedule</button>
+                               <button data-page="calendar" class="nav-link text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent transition-colors">Calendar</button>
+                               <button data-page="settings" class="nav-link text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent transition-colors">Settings</button>
+                           </div>
+                        </div>
+                        <!-- Right Side: Actions -->
+                        <div class="flex items-center space-x-3">
+                             <button id="add-task-btn" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" /></svg>
+                                Add Task
+                            </button>
+                            <button id="logout-btn" class="p-2 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" /></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+                <!-- ===================== PAGE: SCHEDULE ===================== -->
+                <div id="schedule-page" class="app-view">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-slate-900">Your Schedule</h2>
+                        <p class="text-slate-500 mt-1">Here are your upcoming study sessions and assignments.</p>
+                    </div>
+                    <div id="task-list-container" class="space-y-4"></div>
+                    <div id="empty-state" class="hidden text-center py-12">
+                        <svg class="mx-auto h-12 w-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                        <h3 class="mt-2 text-sm font-medium text-slate-900">No tasks yet</h3>
+                        <p class="mt-1 text-sm text-slate-500">Get started by adding a new task.</p>
+                    </div>
+                </div>
+
+                <!-- ===================== PAGE: CALENDAR ===================== -->
+                <div id="calendar-page" class="app-view hidden">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <div class="flex justify-between items-center mb-4">
+                            <button id="prev-month-btn" class="p-2 rounded-full hover:bg-gray-100">&lt;</button>
+                            <h2 id="month-year-header" class="text-xl font-semibold"></h2>
+                            <button id="next-month-btn" class="p-2 rounded-full hover:bg-gray-100">&gt;</button>
+                        </div>
+                        <div class="grid grid-cols-7 gap-1 text-center font-semibold text-gray-600 mb-2">
+                            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                        </div>
+                        <div id="calendar-grid" class="grid grid-cols-7 gap-1"></div>
+                    </div>
+                </div>
+
+                <!-- ===================== PAGE: SETTINGS ===================== -->
+                <div id="settings-page" class="app-view hidden">
+                    <div class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto">
+                        <h2 class="text-2xl font-bold text-slate-900 mb-6">Settings</h2>
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="text-lg font-medium text-slate-800">Profile</h3>
+                                <div class="mt-4 space-y-4">
+                                    <div>
+                                        <label for="settings-name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                                        <input type="text" id="settings-name" value="Alex Doe" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    </div>
+                                    <div>
+                                        <label for="settings-email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                                        <input type="email" id="settings-email" value="student@example.com" disabled class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 bg-gray-100 sm:text-sm">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-200 pt-6">
+                                <h3 class="text-lg font-medium text-slate-800">Notifications</h3>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <span class="text-sm text-gray-600">Enable email reminders</span>
+                                    <button type="button" class="bg-gray-200 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" role="switch" aria-checked="false">
+                                      <span class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 translate-x-0"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-200 pt-6">
+                                <button class="w-full sm:w-auto bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">Delete Account</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ================================== -->
+    <!-- 3. ADD/EDIT TASK MODAL           -->
+    <!-- ================================== -->
+    <div id="task-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-medium leading-6 text-gray-900">New Study Session</h3>
+                <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600"><svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
+            </div>
+            <form id="task-form" class="space-y-4">
+                <div>
+                    <label for="subject" class="block text-sm font-medium text-gray-700">Subject</label>
+                    <input type="text" id="subject" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="e.g., Calculus II" required>
+                </div>
+                <div>
+                    <label for="topic" class="block text-sm font-medium text-gray-700">Topic / Assignment</label>
+                    <input type="text" id="topic" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="e.g., Chapter 5 Problem Set" required>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
+                        <input type="date" id="date" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                    </div>
+                    <div>
+                        <label for="time" class="block text-sm font-medium text-gray-700">Time</label>
+                        <input type="time" id="time" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-3 pt-2">
+                    <button type="button" id="cancel-modal-btn" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Cancel</button>
+                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Save Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Element References ---
+            const loginPage = document.getElementById('login-page');
+            const appPage = document.getElementById('app-page');
+            const loginForm = document.getElementById('login-form');
+            const addTaskBtn = document.getElementById('add-task-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            
+            const taskModal = document.getElementById('task-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const cancelModalBtn = document.getElementById('cancel-modal-btn');
+            const taskForm = document.getElementById('task-form');
+            
+            const taskListContainer = document.getElementById('task-list-container');
+            const emptyState = document.getElementById('empty-state');
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const appViews = document.querySelectorAll('.app-view');
+
+            const monthYearHeader = document.getElementById('month-year-header');
+            const calendarGrid = document.getElementById('calendar-grid');
+            const prevMonthBtn = document.getElementById('prev-month-btn');
+            const nextMonthBtn = document.getElementById('next-month-btn');
+
+            // --- Application State ---
+            let tasks = [];
+            let currentDate = new Date();
+
+            // --- MOCK DATA ---
+            function loadInitialData() {
+                tasks = [
+                    { id: 1, subject: 'Linear Algebra', topic: 'Review Eigenvectors', date: '2025-10-01', time: '10:00', completed: false },
+                    { id: 2, subject: 'Software Engineering', topic: 'Work on Project Proposal', date: '2025-10-01', time: '14:00', completed: true },
+                    { id: 3, subject: 'History', topic: 'Read Chapter 3', date: '2025-10-15', time: '11:00', completed: false },
+                    { id: 4, subject: 'Calculus II', topic: 'Practice Integrals', date: '2025-09-28', time: '15:00', completed: false },
+                ];
+                renderAll();
+            }
+            
+            // --- RENDER FUNCTIONS ---
+            const renderAll = () => {
+                renderTasks();
+                renderCalendar();
+            };
+
+            const renderTasks = () => {
+                taskListContainer.innerHTML = '';
+                if (tasks.length === 0) {
+                    emptyState.classList.remove('hidden');
+                } else {
+                    emptyState.classList.add('hidden');
+                    const sortedTasks = [...tasks].sort((a, b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`));
+                    sortedTasks.forEach(task => {
+                        const taskElement = document.createElement('div');
+                        taskElement.dataset.id = task.id;
+                        taskElement.className = `task-item bg-white shadow-sm rounded-lg p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between transition-opacity ${task.completed ? 'opacity-60' : ''}`;
+                        const formattedDate = new Date(`${task.date}T00:00:00`).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+                        taskElement.innerHTML = `
+                            <div class="flex-grow">
+                                <div class="flex items-center gap-3">
+                                    <span class="flex-shrink-0 h-3 w-3 rounded-full ${task.completed ? 'bg-green-500' : 'bg-indigo-500'}"></span>
+                                    <p class="font-semibold text-lg ${task.completed ? 'line-through text-slate-500' : 'text-slate-900'}">${task.subject}</p>
+                                </div>
+                                <p class="mt-1 text-slate-600 ml-6 ${task.completed ? 'line-through' : ''}">${task.topic}</p>
+                                <div class="mt-2 ml-6 text-sm text-slate-500 flex items-center gap-2">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" /></svg>
+                                    <span>${formattedDate} at ${task.time}</span>
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0 flex items-center space-x-2 mt-4 sm:mt-0">
+                                <button data-action="toggle" class="toggle-btn w-24 text-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm text-white ${task.completed ? 'bg-amber-500 hover:bg-amber-600' : 'bg-green-600 hover:bg-green-700'} focus:outline-none">
+                                    ${task.completed ? 'Undo' : 'Complete'}
+                                </button>
+                                <button data-action="delete" class="delete-btn px-3 py-1.5 border border-gray-300 text-xs font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 focus:outline-none">Delete</button>
+                            </div>`;
+                        taskListContainer.appendChild(taskElement);
+                    });
+                }
+            };
+
+            const renderCalendar = () => {
+                calendarGrid.innerHTML = '';
+                const year = currentDate.getFullYear();
+                const month = currentDate.getMonth();
+                monthYearHeader.textContent = currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+                const firstDayOfMonth = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                for (let i = 0; i < firstDayOfMonth; i++) {
+                    calendarGrid.innerHTML += `<div class="p-2"></div>`;
+                }
+
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    const tasksForDay = tasks.filter(t => t.date === dateStr);
+                    const isToday = new Date().toDateString() === new Date(year, month, day).toDateString();
+                    
+                    let dayCell = `<div class="border rounded-md p-1 min-h-[100px] flex flex-col ${isToday ? 'bg-indigo-50' : ''}">
+                                       <span class="font-semibold ${isToday ? 'text-indigo-600' : 'text-gray-700'}">${day}</span>
+                                       <div class="flex-grow overflow-y-auto text-xs space-y-1 mt-1">`;
+
+                    tasksForDay.forEach(task => {
+                        dayCell += `<div class="p-1 rounded ${task.completed ? 'bg-green-100 text-green-800' : 'bg-indigo-100 text-indigo-800'}">${task.subject}</div>`;
+                    });
+
+                    dayCell += `</div></div>`;
+                    calendarGrid.innerHTML += dayCell;
+                }
+            };
+
+            // --- UI LOGIC ---
+            const showModal = () => { taskForm.reset(); taskModal.classList.remove('hidden'); };
+            const hideModal = () => { taskModal.classList.add('hidden'); };
+
+            const switchView = (page) => {
+                appViews.forEach(view => view.classList.add('hidden'));
+                document.getElementById(`${page}-page`).classList.remove('hidden');
+
+                navLinks.forEach(link => {
+                    link.classList.remove('nav-link-active');
+                    if (link.dataset.page === page) {
+                        link.classList.add('nav-link-active');
+                    }
+                });
+            };
+
+            // --- EVENT HANDLERS ---
+            const handleLogin = (e) => {
+                e.preventDefault();
+                loginPage.classList.add('hidden');
+                appPage.classList.remove('hidden');
+                switchView('schedule');
+                loadInitialData();
+            };
+
+            const handleLogout = () => {
+                appPage.classList.add('hidden');
+                loginPage.classList.remove('hidden');
+                tasks = [];
+            };
+
+            const handleTaskFormSubmit = (e) => {
+                e.preventDefault();
+                tasks.push({
+                    id: Date.now(),
+                    subject: document.getElementById('subject').value,
+                    topic: document.getElementById('topic').value,
+                    date: document.getElementById('date').value,
+                    time: document.getElementById('time').value,
+                    completed: false,
+                });
+                renderAll();
+                hideModal();
+            };
+
+            const handleTaskListClick = (e) => {
+                const action = e.target.dataset.action;
+                if (!action) return;
+                const taskId = Number(e.target.closest('.task-item').dataset.id);
+                if (action === 'toggle') {
+                    const task = tasks.find(t => t.id === taskId);
+                    if (task) task.completed = !task.completed;
+                } else if (action === 'delete') {
+                    tasks = tasks.filter(t => t.id !== taskId);
+                }
+                renderAll();
+            };
+            
+            // --- Event Listeners ---
+            loginForm.addEventListener('submit', handleLogin);
+            logoutBtn.addEventListener('click', handleLogout);
+            addTaskBtn.addEventListener('click', showModal);
+            closeModalBtn.addEventListener('click', hideModal);
+            cancelModalBtn.addEventListener('click', hideModal);
+            taskForm.addEventListener('submit', handleTaskFormSubmit);
+            taskListContainer.addEventListener('click', handleTaskListClick);
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => switchView(link.dataset.page));
+            });
+
+            prevMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                renderCalendar();
+            });
+
+            nextMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                renderCalendar();
+            });
+
+            taskModal.addEventListener('click', (e) => { if (e.target === taskModal) hideModal(); });
+        });
+    </script>
+
+</body>
+</html>
+
