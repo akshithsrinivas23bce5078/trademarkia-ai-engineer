@@ -1,2 +1,8 @@
-# sparklineo-week-2-python-codes
-This is week 2 assignment. It has codes like Multiplication Table which prints the multiplication table till 10. The Random Number Guessing game which generates a number from user and we need to guess a random number from 1 to the random number. Also we print the pattern using loops. 
+# Sparklineo Week 2 Python Codes
+Collection of Python programs using loops and conditionals:
+
+Multiplication Table.py – Program to display the multiplication table of a given number up to 10 using loops.
+
+Random Number Guessing Game.py – Interactive game that generates a random number within a user-defined range and allows the user to guess it with hints until the correct number is found.
+
+Pattern Printing.py – Program to print various patterns (such as stars or numbers) using nested loops. 
